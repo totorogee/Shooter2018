@@ -7,6 +7,7 @@ public class Groups
     public List<Unit> AllUnits = new List<Unit>();
     public List<Formations> Formations = new List<Formations>();
     public Transform Center;
+    public List<int> forms = new List<int> { 0, 0, 0 };
 
     public int MyMode = 0;
 
@@ -16,16 +17,24 @@ public class Groups
         Center = gameObject.transform;
     }
 
-    public void ModeSwitch(int mode)
+    public void ModeUpdate()
+    {
+        ModeUpdate(MyMode);
+    }
+
+    public void ModeUpdate(int mode)
     {
         foreach (var item in AllUnits)
         {
             item.gameObject.transform.SetParent(Main.Instance.unitContainer);
         }
 
-        foreach (var item in Formations)
+
+
+        for (int i = 0; i < Formations.Count; i++)
         {
-            item.OnKill();
+            forms[i] = (int) Formations[i].MyForm;
+            Formations[i].OnKill();
         }
         Formations.Clear();
 
@@ -39,6 +48,7 @@ public class Groups
                 {
                     a.AllUnits.Add(item);
                 }
+                a.MyForm = (Forms) forms[0];
                 break;
             case 1:
                 Formations b = new Formations(Center);
@@ -50,6 +60,9 @@ public class Groups
                 Formations c = new Formations(Center);
                 Formations.Add(c);
                 c.Center.localPosition += new Vector3(-1f, 0, 0); // TEMP
+
+                b.MyForm = (Forms)forms[0];
+                c.MyForm = (Forms)forms[0];
 
                 for (int i = 0; i < AllUnits.Count ; i++)
                 {
@@ -76,6 +89,9 @@ public class Groups
                 Formations.Add(e);
                 Formations.Add(f);
                 Formations.Add(g);
+                e.MyForm = (Forms)forms[0];
+                f.MyForm = (Forms)forms[1];
+                g.MyForm = (Forms)forms[2];
 
                 for (int i = 0; i < AllUnits.Count; i++)
                 {
@@ -110,7 +126,6 @@ public class Groups
         {
             item.ToSquare();
         }
-        ModeSwitch(MyMode);
     }
 
     public void ToTriangle()
@@ -119,7 +134,6 @@ public class Groups
         {
             item.ToTriangle();
         }
-        ModeSwitch(MyMode);
     }
 
     public void ToCircle()
@@ -128,7 +142,6 @@ public class Groups
         {
             item.ToCircle();
         }
-        ModeSwitch(MyMode);
     }
 
     public void ModeSwitch()
@@ -136,7 +149,7 @@ public class Groups
         MyMode += 1;
         MyMode = MyMode % 3;
 
-        ModeSwitch(MyMode);
+        ModeUpdate(MyMode);
         UpdateForms();
     }
 }

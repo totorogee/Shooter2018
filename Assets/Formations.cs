@@ -53,17 +53,12 @@ public class Formations
 
     public void ToSquare()
     {
-        Debug.Log("here3");
-        Debug.Log(MyForm.ToString());
         MyForm = Forms.Square;
-        Debug.Log(MyForm.ToString());
-
         ToSquare(AllUnits);
     }
 
     public void ToSquare( List<Unit> Units)
     {
-        Debug.Log("here");
 
         MyForm = Forms.Square;
         int count = Units.Count;
@@ -99,15 +94,14 @@ public class Formations
         for (int i = 0; i < count; i++)
         {
             Units[i].transform.SetParent(Center);
+            Units[i].transform.DOKill();
             Units[i].transform.DOLocalMove(Poses[i].Position, 1f);
         }
     }
 
     public void ToTriangle()
     {
-        Debug.Log(MyForm.ToString());
         MyForm = Forms.Triangle;
-        Debug.Log(MyForm.ToString());
         ToTriangle(AllUnits);
     }
 
@@ -148,6 +142,7 @@ public class Formations
         for (int i = 0; i < count; i++)
         {
             Units[i].transform.SetParent(Center);
+            Units[i].transform.DOKill();
             Units[i].transform.DOLocalMove(Poses[i].Position, 1f);
         }
 
@@ -162,7 +157,6 @@ public class Formations
     public void ToCircle(List<Unit> Units)
     {
         MyForm = Forms.Circle;
-        Debug.Log("here2");
 
         int count = Units.Count;
         if (count <= 0) { return; }
@@ -203,6 +197,7 @@ public class Formations
         for (int i = 0; i < count; i++)
         {
             Units[i].transform.SetParent(Center);
+            Units[i].transform.DOKill();
             Units[i].transform.DOLocalMove(Poses[i].Position, 1f);
         }
     }
