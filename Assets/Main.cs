@@ -10,6 +10,8 @@ public class Main : MonoBehaviour
     public static Main Instance;
 
     [SerializeField] protected Text debugSelection;
+    [SerializeField] protected Slider debugRangeSlider;
+    [SerializeField] protected Text debugRangeText;
 
     [SerializeField] protected Units BluePrefab;
     [SerializeField] protected Units RedPrefab;
@@ -17,12 +19,19 @@ public class Main : MonoBehaviour
     [SerializeField] protected float boundary;
 
     [SerializeField] protected float updateTime = 0.2f;
+
+    
     protected float nextUpdate = 0;
 
-   private Groups selected;
+    public float Range = 1f;
+         
+
+    private Groups selected;
 
     public Groups Blue;
     public Groups Red;
+
+    private bool combatOn = false;
 
     public void Awake()
     {
@@ -69,6 +78,13 @@ public class Main : MonoBehaviour
     public void TimedUpdate()
     {
         selected.MoveUnits();
+
+        if (combatOn)
+        {
+            Blue.Combat();
+            Red.Combat();
+        }
+
     }
 
     public void ToCircle()
@@ -109,6 +125,17 @@ public class Main : MonoBehaviour
         debugSelection.text = (selected == Blue) ? "Selection (Blue)" : "Selection (Red)";
 
 
+    }
+
+    public void Combat()
+    {
+        combatOn = !combatOn;
+    }
+
+    public void SetRange()
+    {
+        Range = debugRangeSlider.value;
+        debugRangeText.text = Range.ToString("F1");
     }
 }
 

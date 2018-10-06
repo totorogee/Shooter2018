@@ -88,6 +88,7 @@ public class Formations
 
         for (int i = 0; i < count; i++)
         {
+            if (Units[i].Broken) { continue; }
             Units[i].transform.SetParent(Center);
             Units[i].transform.DOKill();
             Units[i].transform.DOLocalMove(Poses[i].Position, 1f);
@@ -136,6 +137,8 @@ public class Formations
 
         for (int i = 0; i < count; i++)
         {
+
+            if (Units[i].Broken) { continue; }
             Units[i].transform.SetParent(Center);
             Units[i].transform.DOKill();
             Units[i].transform.DOLocalMove(Poses[i].Position, 1f);
@@ -191,6 +194,7 @@ public class Formations
 
         for (int i = 0; i < count; i++)
         {
+            if (Units[i].Broken) { continue; }
             Units[i].transform.SetParent(Center);
             Units[i].transform.DOKill();
             Units[i].transform.DOLocalMove(Poses[i].Position, 1f);

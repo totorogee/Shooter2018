@@ -27,6 +27,14 @@ public class Groups
 
     }
 
+    public void Combat()
+    {
+        foreach (var item in AllUnits)
+        {
+            item.Combat();
+        }
+    }
+
     public void ModeUpdate(int mode)
     {
         foreach (var item in AllUnits)
