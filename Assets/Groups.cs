@@ -22,6 +22,11 @@ public class Groups
         ModeUpdate(MyMode);
     }
 
+    public void MoveUnits()
+    {
+
+    }
+
     public void ModeUpdate(int mode)
     {
         foreach (var item in AllUnits)

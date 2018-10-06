@@ -2,57 +2,113 @@
 using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
+using UnityEngine.UI;
+
 
 public class Main : MonoBehaviour
 {
     public static Main Instance;
 
-    [SerializeField] protected Units unitPrefab;
+    [SerializeField] protected Text debugSelection;
+
+    [SerializeField] protected Units BluePrefab;
+    [SerializeField] protected Units RedPrefab;
     [SerializeField] public Transform unitContainer;
     [SerializeField] protected float boundary;
 
+    [SerializeField] protected float updateTime = 0.2f;
+    protected float nextUpdate = 0;
+
+   private Groups selected;
+
     public Groups Blue;
+    public Groups Red;
 
     public void Awake()
     {
         Instance = this;
         Blue = new Groups();
-        Blue.ModeSwitch();
+        Blue.Center.localPosition = new Vector3(0, 0, -2);
+        Blue.Center.localEulerAngles = new Vector3(0, 180, 0);
+        Red = new Groups();
+        Red.Center.localPosition = new Vector3(0, 0, 2);
+        selected = Blue;
+
+    nextUpdate = Time.time;
+    }
+
+
+    private void Start()
+    {
     }
 
     public void RandomSpwan()
     {
+        Units units = (selected == Blue) ? BluePrefab : RedPrefab;
+
+
         for (int i = 0; i < 24; i++)
         {
             Vector3 randomPos = new Vector3(Random.Range(-1f, 1f), unitContainer.position.y, Random.Range(-1f, 1f));
-            Instantiate(unitPrefab.gameObject, randomPos * boundary, Quaternion.identity, unitContainer);
-            Blue.ModeUpdate();
+            var temp = Instantiate(units.gameObject, randomPos * boundary, unitContainer.rotation, unitContainer);
+            temp.GetComponent<Units>().TeampUp(selected);
+            selected.ModeUpdate();
         }
+    }
 
+    public void Update()
+    {
+        if (Time.time >= nextUpdate)
+        {
+            nextUpdate = Time.time + updateTime;
+            TimedUpdate();
+        }
+       
+    }
 
+    public void TimedUpdate()
+    {
+        selected.MoveUnits();
     }
 
     public void ToCircle()
     {
-        Blue.ModeUpdate();
-        Blue.ToCircle();
+        selected.ModeUpdate();
+        selected.ToCircle();
     }
 
     public void ToTriangle()
     {
-        Blue.ModeUpdate();
-        Blue.ToTriangle();
+        selected.ModeUpdate();
+        selected.ToTriangle();
     }
 
     public void ToSquare()
     {
-        Blue.ModeUpdate();
-        Blue.ToSquare();
+        selected.ModeUpdate();
+        selected.ToSquare();
     }
 
     public void Mode()
     {
-        Blue.ModeSwitch();
+        selected.ModeSwitch();
+    }
+
+    public void ChangeSelection()
+    {
+
+
+        if (selected == null)
+        {
+            selected = Blue;
+            debugSelection.text = "Selection (Blue)";
+            return;
+        }
+
+        selected = (selected == Blue) ? Red : Blue;
+        debugSelection.text = (selected == Blue) ? "Selection (Blue)" : "Selection (Red)";
+
+
     }
 }
 

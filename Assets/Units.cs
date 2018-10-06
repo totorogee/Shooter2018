@@ -30,7 +30,6 @@ public class Units : MonoBehaviour
     public void Start()
     {
         AllUnits.Add(this);
-        Main.Instance.Blue.AllUnits.Add(this);
     }
 
     public virtual void Change()
@@ -41,6 +40,12 @@ public class Units : MonoBehaviour
     public virtual void GetUnitsList()
     {
 
+    }
+
+    public virtual void TeampUp( Groups groups)
+    {
+  
+        groups.AllUnits.Add(this); // 
     }
 }
 
