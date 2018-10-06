@@ -879,7 +879,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 424709eb3b06ed44c8784a01d2debf8f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  unitPrefab: {fileID: 114514876104340274, guid: 06aa60252d8f3294cae16662c6b35066,
+  unitPrefab: {fileID: 114495312921932946, guid: 06aa60252d8f3294cae16662c6b35066,
     type: 2}
   unitContainer: {fileID: 2118979795}
   boundary: 2

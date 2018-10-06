@@ -3,26 +3,21 @@ using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
 
-public enum Forms
-{
-    Square = 0,
-    Triangle = 1,
-    Circle = 2
-}
+
 
 public class WeightedVacancy
 {
-    public Unit Unit;
+    public Units Unit;
     public Vector3 Position;
     public float Weight;
 }
 
 public class Formations
 {
-    public List<Unit> AllUnits = new List<Unit>();
+    public List<Units> AllUnits = new List<Units>();
     public List<WeightedVacancy> Poses = new List<WeightedVacancy>();
     public Transform Center;
-    public Forms MyForm;
+    public FormationTypes MyForm;
 
     public Formations(Transform GroupTransform)
     {
@@ -37,13 +32,13 @@ public class Formations
     {
         switch (MyForm)
         {
-            case Forms.Square:
+            case FormationTypes.Square:
                 ToSquare();
                 break;
-            case Forms.Triangle:
+            case FormationTypes.Triangle:
                 ToTriangle();
                 break;
-            case Forms.Circle:
+            case FormationTypes.Circle:
                 ToCircle();
                 break;
             default:
@@ -53,14 +48,14 @@ public class Formations
 
     public void ToSquare()
     {
-        MyForm = Forms.Square;
+        MyForm = FormationTypes.Square;
         ToSquare(AllUnits);
     }
 
-    public void ToSquare( List<Unit> Units)
+    public void ToSquare( List<Units> Units)
     {
 
-        MyForm = Forms.Square;
+        MyForm = FormationTypes.Square;
         int count = Units.Count;
         if (count <= 0)
         {
@@ -101,13 +96,13 @@ public class Formations
 
     public void ToTriangle()
     {
-        MyForm = Forms.Triangle;
+        MyForm = FormationTypes.Triangle;
         ToTriangle(AllUnits);
     }
 
-    public void ToTriangle(List<Unit> Units)
+    public void ToTriangle(List<Units> Units)
     {
-        MyForm = Forms.Triangle;
+        MyForm = FormationTypes.Triangle;
         int count = Units.Count;
         if (count <= 0)
         {
@@ -150,13 +145,13 @@ public class Formations
 
     public void ToCircle()
     {
-        MyForm = Forms.Circle;
+        MyForm = FormationTypes.Circle;
         ToCircle(AllUnits);
     }
 
-    public void ToCircle(List<Unit> Units)
+    public void ToCircle(List<Units> Units)
     {
-        MyForm = Forms.Circle;
+        MyForm = FormationTypes.Circle;
 
         int count = Units.Count;
         if (count <= 0) { return; }

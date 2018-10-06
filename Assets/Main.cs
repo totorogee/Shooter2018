@@ -7,7 +7,7 @@ public class Main : MonoBehaviour
 {
     public static Main Instance;
 
-    [SerializeField] protected Unit unitPrefab;
+    [SerializeField] protected Units unitPrefab;
     [SerializeField] public Transform unitContainer;
     [SerializeField] protected float boundary;
 
@@ -22,9 +22,14 @@ public class Main : MonoBehaviour
 
     public void RandomSpwan()
     {
-        Vector3 randomPos = new Vector3(Random.Range(-1f, 1f), unitContainer.position.y, Random.Range(-1f, 1f));
-        Instantiate(unitPrefab.gameObject, randomPos * boundary, Quaternion.identity, unitContainer);
-        Blue.ModeUpdate();
+        for (int i = 0; i < 24; i++)
+        {
+            Vector3 randomPos = new Vector3(Random.Range(-1f, 1f), unitContainer.position.y, Random.Range(-1f, 1f));
+            Instantiate(unitPrefab.gameObject, randomPos * boundary, Quaternion.identity, unitContainer);
+            Blue.ModeUpdate();
+        }
+
+
     }
 
     public void ToCircle()

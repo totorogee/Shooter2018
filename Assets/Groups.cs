@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Groups
 {
-    public List<Unit> AllUnits = new List<Unit>();
+    public List<Units> AllUnits = new List<Units>();
     public List<Formations> Formations = new List<Formations>();
     public Transform Center;
     public List<int> forms = new List<int> { 0, 0, 0 };
@@ -48,21 +48,21 @@ public class Groups
                 {
                     a.AllUnits.Add(item);
                 }
-                a.MyForm = (Forms) forms[0];
+                a.MyForm = (FormationTypes) forms[0];
                 break;
             case 1:
                 Formations b = new Formations(Center);
                 Formations.Add(b);
-                b.Center.localPosition += new Vector3(1f,0,0); // TEMP
+                b.Center.localPosition += new Vector3(1.5f,0,0); // TEMP
 
                 // TODO: Sorting 
 
                 Formations c = new Formations(Center);
                 Formations.Add(c);
-                c.Center.localPosition += new Vector3(-1f, 0, 0); // TEMP
+                c.Center.localPosition += new Vector3(-1.5f, 0, 0); // TEMP
 
-                b.MyForm = (Forms)forms[0];
-                c.MyForm = (Forms)forms[0];
+                b.MyForm = (FormationTypes)forms[0];
+                c.MyForm = (FormationTypes)forms[0];
 
                 for (int i = 0; i < AllUnits.Count ; i++)
                 {
@@ -78,20 +78,20 @@ public class Groups
                 break;
             case 2:
                 Formations e = new Formations(Center);
-                e.Center.localPosition += new Vector3(0, 0, 1f); // TEMP
+                e.Center.localPosition += new Vector3(0, 0, 1.5f); // TEMP
 
                 Formations f = new Formations(Center);
-                f.Center.localPosition += new Vector3(1f, 0, 0); // TEMP
+                f.Center.localPosition += new Vector3(1.5f, 0, 0); // TEMP
 
                 Formations g = new Formations(Center);
-                g.Center.localPosition += new Vector3(-1f, 0, 0); // TEMP
+                g.Center.localPosition += new Vector3(-1.5f, 0, 0); // TEMP
 
                 Formations.Add(e);
                 Formations.Add(f);
                 Formations.Add(g);
-                e.MyForm = (Forms)forms[0];
-                f.MyForm = (Forms)forms[1];
-                g.MyForm = (Forms)forms[2];
+                e.MyForm = (FormationTypes)forms[0];
+                f.MyForm = (FormationTypes)forms[1];
+                g.MyForm = (FormationTypes)forms[2];
 
                 for (int i = 0; i < AllUnits.Count; i++)
                 {
