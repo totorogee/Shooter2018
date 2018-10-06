@@ -10,8 +10,12 @@ public class Main : MonoBehaviour
     public static Main Instance;
 
     [SerializeField] protected Text debugSelection;
-    [SerializeField] protected Slider debugRangeSlider;
-    [SerializeField] protected Text debugRangeText;
+
+    [SerializeField] protected Slider debugMidRangeSlider;
+    [SerializeField] protected Text debugMidRangeText;
+
+    [SerializeField] protected Slider debugMeleeRangeSlider;
+    [SerializeField] protected Text debugMeleeRangeText;
 
     [SerializeField] protected Units BluePrefab;
     [SerializeField] protected Units RedPrefab;
@@ -23,8 +27,8 @@ public class Main : MonoBehaviour
     
     protected float nextUpdate = 0;
 
-    public float Range = 1f;
-         
+    public float MidRange = 1f;
+    public float MeleeRange = 0.2f;
 
     private Groups selected;
 
@@ -132,10 +136,16 @@ public class Main : MonoBehaviour
         combatOn = !combatOn;
     }
 
-    public void SetRange()
+    public void SetMidRange()
     {
-        Range = debugRangeSlider.value;
-        debugRangeText.text = Range.ToString("F1");
+        MidRange = debugMidRangeSlider.value;
+        debugMidRangeText.text = MidRange.ToString("F2");
+    }
+
+    public void SetMeleeRange()
+    {
+        MeleeRange = debugMeleeRangeSlider.value;
+        debugMeleeRangeText.text = MeleeRange.ToString("F2");
     }
 }
 

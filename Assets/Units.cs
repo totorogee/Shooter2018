@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DG.Tweening;
 
 public class GroupOfUnits<T> : Units where T : Units
 {
@@ -34,7 +35,8 @@ public class Units : MonoBehaviour
     private LineRenderer lineRenderer;
 
     private float randomDelay = 1f;
-    private float attactCoolTime = 1f;
+    private float midAttactCoolTime = 1f;
+    private float meleeAttactCoolTime = 0.5f;
     private float attactCoolTimeNext = 0f; 
     private float attactShowing = 0.1f;
 
@@ -55,7 +57,36 @@ public class Units : MonoBehaviour
         }
     }
 
+    public int Neighbour
+    {
+        get
+        {
+            return FoundNeighbour();
+        }
+    }
+
     private float hp = 12;
+
+    private int FoundNeighbour(float area = 0.4f)
+    {
+        int result = 0;
+
+        foreach (var item in MyGroup.AllUnits)
+        {
+            if (!item.Broken)
+            {
+                if ((this.transform.position - item.transform.position).sqrMagnitude <= area * area)
+                {
+
+                    result++;
+                }
+            }
+        }
+
+        if(MyGroup == Main.Instance.Red)
+        Debug.Log(result);
+        return result;
+    }
 
     private void BreakTrigger()
     {
@@ -103,12 +134,24 @@ public class Units : MonoBehaviour
         {
             foreach (var item in enemy.AllUnits)
             {
-                if ((this.transform.position - item.transform.position).sqrMagnitude <= Main.Instance.Range * Main.Instance.Range)
+                if ((this.transform.position - item.transform.position).sqrMagnitude <= Main.Instance.MeleeRange * Main.Instance.MeleeRange)
                 {
                     if (item.hp <= 0) { continue; }
 
                     StopAllCoroutines();
-                    StartCoroutine(Attact(randomDelay, attactShowing, this, item));
+                    StartCoroutine(MeleeAttact(randomDelay, attactShowing, this, item));
+                    break;
+                }
+            }
+
+            foreach (var item in enemy.AllUnits)
+            {
+                if ((this.transform.position - item.transform.position).sqrMagnitude <= Main.Instance.MidRange * Main.Instance.MidRange)
+                {
+                    if (item.hp <= 0) { continue; }
+
+                    StopAllCoroutines();
+                    StartCoroutine(MidAttact(randomDelay, attactShowing, this, item));
                     break;
                 }
             }
@@ -117,7 +160,7 @@ public class Units : MonoBehaviour
 
     }
 
-    public virtual IEnumerator Attact (float delay, float last, Units me, Units them)
+    public virtual IEnumerator MidAttact (float delay, float last, Units me, Units them)
     {
         delay = Random.Range(0, delay);
 
@@ -130,11 +173,34 @@ public class Units : MonoBehaviour
         lineRenderer.SetPosition(0, me.transform.position);
         lineRenderer.SetPosition(1, me.transform.position);
 
-        attactCoolTimeNext = attactCoolTime + Time.time;
+        attactCoolTimeNext = midAttactCoolTime + Time.time;
 
     }
 
-    
+    public virtual IEnumerator MeleeAttact(float delay, float last, Units me, Units them)
+    {
+        delay = Random.Range(0, delay);
+
+        yield return new WaitForSeconds(delay);
+        lineRenderer.SetPosition(0, me.transform.position);
+        lineRenderer.SetPosition(1, them.transform.position);
+        them.Hp -=2 ;
+        int n = them.Neighbour;
+        if (n <= 5 )
+        {
+            them.transform.DOPunchPosition((them.transform.position - me.transform.position).normalized *(5- n)/10f , 1f, 1, 0f);
+
+        }
+
+        yield return new WaitForSeconds(last);
+        lineRenderer.SetPosition(0, me.transform.position);
+        lineRenderer.SetPosition(1, me.transform.position);
+
+        attactCoolTimeNext = meleeAttactCoolTime + Time.time;
+
+    }
+
+
 
 
 }
