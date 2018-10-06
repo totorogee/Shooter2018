@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DG.Tweening;
 
 public class Groups
 {
@@ -27,6 +28,7 @@ public class Groups
 
     }
 
+
     public void Combat()
     {
         foreach (var item in AllUnits)
@@ -37,12 +39,18 @@ public class Groups
 
     public void ModeUpdate(int mode)
     {
+        List<Units> temp = new List<Units>();
+        Transform unitContainer = (this == Main.Instance.Blue) ? Main.Instance.BlueContainer : Main.Instance.RedContainer;
+
         foreach (var item in AllUnits)
         {
-            item.gameObject.transform.SetParent(Main.Instance.unitContainer);
+            item.gameObject.transform.SetParent(unitContainer);
+            if (!item.Broken)
+            {
+                temp.Add(item);
+            }
         }
-
-
+        AllUnits = temp;
 
         for (int i = 0; i < Formations.Count; i++)
         {
@@ -59,6 +67,7 @@ public class Groups
 
                 foreach (var item in AllUnits)
                 {
+                    if(item.Broken) { continue; }
                     a.AllUnits.Add(item);
                 }
                 a.MyForm = (FormationTypes) forms[0];
@@ -81,10 +90,12 @@ public class Groups
                 {
                     if (i%2 == 0)
                     {
+
                         b.AllUnits.Add( AllUnits[i] );
                     }
                     else
                     {
+
                         c.AllUnits.Add( AllUnits[i] );
                     }
                 }
@@ -110,14 +121,17 @@ public class Groups
                 {
                     if (i % 4 == 0)
                     {
+
                         f.AllUnits.Add(AllUnits[i]);
                     }
                     else if (i%4 == 1)
                     {
+
                         g.AllUnits.Add(AllUnits[i]);
                     }
                     else
                     {
+
                         e.AllUnits.Add(AllUnits[i]);
                     }
                 }

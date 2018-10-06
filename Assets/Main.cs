@@ -19,7 +19,9 @@ public class Main : MonoBehaviour
 
     [SerializeField] protected Units BluePrefab;
     [SerializeField] protected Units RedPrefab;
-    [SerializeField] public Transform unitContainer;
+    [SerializeField] public Transform BlueContainer;
+    [SerializeField] public Transform RedContainer;
+
     [SerializeField] protected float boundary;
 
     [SerializeField] protected float updateTime = 0.2f;
@@ -43,6 +45,7 @@ public class Main : MonoBehaviour
         Blue = new Groups();
         Blue.Center.localPosition = new Vector3(0, 0, -2);
         Blue.Center.localEulerAngles = new Vector3(0, 180, 0);
+        BlueContainer.localEulerAngles = new Vector3(0, 180, 0);
         Red = new Groups();
         Red.Center.localPosition = new Vector3(0, 0, 2);
         selected = Blue;
@@ -58,6 +61,7 @@ public class Main : MonoBehaviour
     public void RandomSpwan()
     {
         Units units = (selected == Blue) ? BluePrefab : RedPrefab;
+        Transform unitContainer = (selected == Blue) ? BlueContainer : RedContainer ;
 
 
         for (int i = 0; i < 24; i++)
@@ -76,7 +80,6 @@ public class Main : MonoBehaviour
             nextUpdate = Time.time + updateTime;
             TimedUpdate();
         }
-       
     }
 
     public void TimedUpdate()
@@ -88,6 +91,7 @@ public class Main : MonoBehaviour
             Blue.Combat();
             Red.Combat();
         }
+
 
     }
 

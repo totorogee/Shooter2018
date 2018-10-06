@@ -83,8 +83,6 @@ public class Units : MonoBehaviour
             }
         }
 
-        if(MyGroup == Main.Instance.Red)
-        Debug.Log(result);
         return result;
     }
 
@@ -96,6 +94,8 @@ public class Units : MonoBehaviour
             breakEffect.gameObject.SetActive(true);
             Color old = GetComponent<MeshRenderer>().material.color;
             GetComponent<MeshRenderer>().material.color = Color.Lerp(old, Color.black, 0.8f);
+            GetComponent<MeshRenderer>().material.DOColor(Color.clear, 5f);
+            this.transform.DOScale(0f, 5f);
         }
 
     }
@@ -140,7 +140,7 @@ public class Units : MonoBehaviour
 
                     StopAllCoroutines();
                     StartCoroutine(MeleeAttact(randomDelay, attactShowing, this, item));
-                    break;
+                    return;
                 }
             }
 
@@ -152,7 +152,7 @@ public class Units : MonoBehaviour
 
                     StopAllCoroutines();
                     StartCoroutine(MidAttact(randomDelay, attactShowing, this, item));
-                    break;
+                    return;
                 }
             }
         }
@@ -185,12 +185,15 @@ public class Units : MonoBehaviour
         lineRenderer.SetPosition(0, me.transform.position);
         lineRenderer.SetPosition(1, them.transform.position);
         them.Hp -=2 ;
+        float push = 1;
         int n = them.Neighbour;
-        if (n <= 5 )
+        if (n < 8)
         {
-            them.transform.DOPunchPosition((them.transform.position - me.transform.position).normalized *(5- n)/10f , 1f, 1, 0f);
-
+            push = (8 - n);
         }
+         float dir = (MyGroup == Main.Instance.Red) ? -1f : 1f;
+         them.transform.DOPunchPosition( dir*(them.transform.position - me.transform.position).normalized *push /10f , 1f, 1, 0f);
+        
 
         yield return new WaitForSeconds(last);
         lineRenderer.SetPosition(0, me.transform.position);
@@ -199,7 +202,6 @@ public class Units : MonoBehaviour
         attactCoolTimeNext = meleeAttactCoolTime + Time.time;
 
     }
-
 
 
 
