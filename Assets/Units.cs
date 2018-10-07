@@ -132,29 +132,36 @@ public class Units : MonoBehaviour
 
         if (Time.time > attactCoolTimeNext)
         {
-            foreach (var item in enemy.AllUnits)
+            if (MyGroup.MeleePower > 0)
             {
-                if ((this.transform.position - item.transform.position).sqrMagnitude <= Main.Instance.MeleeRange * Main.Instance.MeleeRange)
+                foreach (var item in enemy.AllUnits)
                 {
-                    if (item.hp <= 0) { continue; }
+                    if ((this.transform.position - item.transform.position).sqrMagnitude <= Main.Instance.MeleeRange * Main.Instance.MeleeRange)
+                    {
+                        if (item.hp <= 0) { continue; }
 
-                    StopAllCoroutines();
-                    StartCoroutine(MeleeAttact(randomDelay, attactShowing, this, item));
-                    return;
+                        StopAllCoroutines();
+                        StartCoroutine(MeleeAttact(randomDelay, attactShowing, this, item));
+                        return;
+                    }
                 }
             }
 
-            foreach (var item in enemy.AllUnits)
+            if (MyGroup.MidRangePower > 0)
             {
-                if ((this.transform.position - item.transform.position).sqrMagnitude <= Main.Instance.MidRange * Main.Instance.MidRange)
+                foreach (var item in enemy.AllUnits)
                 {
-                    if (item.hp <= 0) { continue; }
+                    if ((this.transform.position - item.transform.position).sqrMagnitude <= Main.Instance.MidRange * Main.Instance.MidRange)
+                    {
+                        if (item.hp <= 0) { continue; }
 
-                    StopAllCoroutines();
-                    StartCoroutine(MidAttact(randomDelay, attactShowing, this, item));
-                    return;
+                        StopAllCoroutines();
+                        StartCoroutine(MidAttact(randomDelay, attactShowing, this, item));
+                        return;
+                    }
                 }
             }
+
         }
 
 
@@ -167,7 +174,7 @@ public class Units : MonoBehaviour
         yield return new WaitForSeconds(delay);
         lineRenderer.SetPosition(0, me.transform.position);
         lineRenderer.SetPosition(1, them.transform.position);
-        them.Hp --;
+        them.Hp -= MyGroup.MidRangePower;
 
         yield return new WaitForSeconds(last);
         lineRenderer.SetPosition(0, me.transform.position);
@@ -184,7 +191,8 @@ public class Units : MonoBehaviour
         yield return new WaitForSeconds(delay);
         lineRenderer.SetPosition(0, me.transform.position);
         lineRenderer.SetPosition(1, them.transform.position);
-        them.Hp -=2 ;
+        them.Hp -= MyGroup.MeleePower *2 ;
+
         float push = 1;
         int n = them.Neighbour;
         if (n < 8)
@@ -192,7 +200,7 @@ public class Units : MonoBehaviour
             push = (8 - n);
         }
          float dir = (MyGroup == Main.Instance.Red) ? -1f : 1f;
-         them.transform.DOPunchPosition( dir*(them.transform.position - me.transform.position).normalized *push /10f , 1f, 1, 0f);
+         them.transform.DOPunchPosition( dir*(them.transform.position - me.transform.position).normalized *push /20f , 1f, 1, 0f);
         
 
         yield return new WaitForSeconds(last);

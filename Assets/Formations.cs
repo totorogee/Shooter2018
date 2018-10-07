@@ -19,6 +19,23 @@ public class Formations
     public Transform Center;
     public FormationTypes MyForm;
 
+    private bool broken = false;
+
+    public bool Broken
+    {
+        get
+        {
+            if (broken) { return true; }
+
+            foreach (var item in AllUnits)
+            {
+                if (!item.Broken) { return false; }
+            }
+            broken = true;
+            return true;
+        }
+    }
+
     public Formations(Transform GroupTransform)
     {
         GameObject gameObject = new GameObject();

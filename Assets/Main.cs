@@ -38,6 +38,7 @@ public class Main : MonoBehaviour
     public Groups Red;
 
     private bool combatOn = false;
+    private bool forwardPressed = false;
 
     public void Awake()
     {
@@ -56,6 +57,24 @@ public class Main : MonoBehaviour
 
     private void Start()
     {
+        Red.MeleePower = 1f;
+        Blue.MeleePower = 0f;
+
+        Red.MidRangePower = 0f;
+        Blue.MidRangePower = 1f;
+
+        SetMeleeRange(true);
+        SetMidRange(true);
+        RandomSpwan();
+        ToCircle();
+        selected = Red;
+        ForwardPressed();
+        RandomSpwan();
+        ToCircle();
+        ChangeSelection();
+        Combat();
+
+
     }
 
     public void RandomSpwan()
@@ -79,6 +98,11 @@ public class Main : MonoBehaviour
         {
             nextUpdate = Time.time + updateTime;
             TimedUpdate();
+
+        }
+        if (forwardPressed)
+        {
+            MoveForward();
         }
     }
 
@@ -91,7 +115,6 @@ public class Main : MonoBehaviour
             Blue.Combat();
             Red.Combat();
         }
-
 
     }
 
@@ -140,16 +163,51 @@ public class Main : MonoBehaviour
         combatOn = !combatOn;
     }
 
-    public void SetMidRange()
+    public void SetMidRange(bool init = false)
     {
+        if (init)
+        {
+            debugMidRangeSlider.value = MidRange;
+        }
+
         MidRange = debugMidRangeSlider.value;
         debugMidRangeText.text = MidRange.ToString("F2");
     }
 
-    public void SetMeleeRange()
+    public void SetMeleeRange(bool init = false)
     {
+        if (init)
+        {
+            debugMeleeRangeSlider.value = MeleeRange;
+        }
+
         MeleeRange = debugMeleeRangeSlider.value;
         debugMeleeRangeText.text = MeleeRange.ToString("F2");
+    }
+
+    public void ForwardPressed()
+    {
+        forwardPressed = !forwardPressed;
+
+    }
+
+    public void MoveForward()
+    {
+        float distant = Mathf.Infinity;
+        Vector3 target = Vector3.zero;
+
+        foreach (var item in Blue.Formations )
+        {
+            if (item.Broken) { continue; }
+
+            if ( (item.Center.position - Red.Center.position).sqrMagnitude < distant)
+            {
+                target = item.Center.position;
+            }
+        }
+
+        Vector3 dir = target - Red.Center.position;
+        Red.Center.localPosition += dir.normalized * 0.005f;
     }
 }
 

@@ -10,6 +10,9 @@ public class Groups
     public Transform Center;
     public List<int> forms = new List<int> { 0, 0, 0 };
 
+    public float MeleePower = 1f;
+    public float MidRangePower = 1f;
+
     public int MyMode = 0;
 
     public Groups()
